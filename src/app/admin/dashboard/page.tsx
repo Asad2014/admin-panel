@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -9,6 +7,27 @@ import { urlFor } from "@/sanity/lib/image";
 import Swal from "sweetalert2";
 import ProtectedRoute from "@/app/components/protectedroute";
 import { v4 as uuidv4 } from 'uuid';
+import { FaDollarSign, FaShoppingCart, FaClock, FaCheckCircle } from 'react-icons/fa'; // Add icons
+import { Line, Bar, Pie } from 'react-chartjs-2'; // Assuming you're using react-chartjs-2
+import {
+  Chart as ChartJS,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+} from 'chart.js'; // Import the necessary elements
+
+// Registering the components (no CategoryScale)
+ChartJS.register(
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement
+);
 
 interface Order {
   _id: string;
@@ -110,38 +129,67 @@ export default function AdminDashboard() {
     }
   };
 
+  // Dummy data for the UI
+  const totalRevenue = 1500;
+  const totalOrders = 2;
+  const pendingOrders = 2;
+  const completedOrders = 1;
+
+ 
+
   return (
     <ProtectedRoute>
       <div className="flex flex-col h-screen bg-gray-100">
         {/* Navbar */}
         <nav className="bg-blue-600 text-white p-4 shadow-lg flex justify-between">
           <h2 className="text-2xl font-bold">Admin Dashboard</h2>
-          <div className="flex space-x-4">
-            {["All", "pending", "dispatch", "success"].map((status) => (
-              <button
-                key={status}
-                className={`px-4 py-2 rounded-lg transition-all ${
-                  filter === status ? "bg-white text-blue-900 font-bold" : "text-white"
-                }`}
-                onClick={() => setFilter(status)}
-              >
-                {status.charAt(0).toUpperCase() + status.slice(1)}
-              </button>
-            ))}
-          </div>
         </nav>
 
-        {/* Orders Table */}
+        {/* Main Content */}
         <div className="flex-1 p-6 overflow-y-auto">
-          <h2 className="text-2xl font-bold mb-4 text-center">Orders</h2>
-          <div className="overflow-x-auto bg-white shadow-md rounded-lg">
+          {/* Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="bg-white p-6 rounded-lg shadow-md flex items-center">
+              <FaDollarSign className="text-3xl text-blue-600 mr-4" />
+              <div>
+                <p className="text-gray-600">Total Revenue</p>
+                <p className="text-2xl font-bold">${totalRevenue.toFixed(2)}\</p>
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-md flex items-center">
+              <FaShoppingCart className="text-3xl text-green-600 mr-4" />
+              <div>
+                <p className="text-gray-600">Total Orders</p>
+                <p className="text-2xl font-bold">{totalOrders}</p>
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-md flex items-center">
+              <FaClock className="text-3xl text-yellow-600 mr-4" />
+              <div>
+                <p className="text-gray-600">Pending Orders</p>
+                <p className="text-2xl font-bold">{pendingOrders}</p>
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-md flex items-center">
+              <FaCheckCircle className="text-3xl text-purple-600 mr-4" />
+              <div>
+                <p className="text-gray-600">Completed Orders</p>
+                <p className="text-2xl font-bold">{completedOrders}</p>
+              </div>
+            </div>
+          </div>
+
+          
+        
+
+          {/* Orders Table */}
+          <div className="overflow-x-auto bg-white shadow-md rounded-lg mt-8">
             <table className="min-w-full divide-y divide-gray-200 text-sm lg:text-base">
               <thead className="bg-gray-50 text-blue-800">
                 <tr>
                   <th className="px-4 py-2 text-center">ID</th>
                   <th className="px-4 py-2 text-left">Customer</th>
                   <th className="px-4 py-2 text-left">Address</th>
-                  {/* <th>Date</th> */}
                   <th className="px-4 py-2 text-left">Total</th>
                   <th className="px-4 py-2 text-left">Status</th>
                   <th className="px-4 py-2 text-left">Action</th>
@@ -154,10 +202,9 @@ export default function AdminDashboard() {
                       className="cursor-pointer hover:bg-red-100 transition-all"
                       onClick={() => toggleOrderDetails(order._id)}
                     >
-                       <td className="px-4 py-2 text-center">{`ORD-${uuidv4()}`}</td> 
+                      <td className="px-4 py-2 text-center">{`ORD-${uuidv4()}`}</td>
                       <td className="px-4 py-2 text-left">{order.name}</td>
                       <td className="px-4 py-2 text-left">{order.address}</td>
-                      {/* <td>{new Date(order.orderDate).toLocaleDateString()}</td> */}
                       <td className="px-4 py-2 text-left">${order.totalAmount}</td>
                       <td>
                         <select
@@ -212,4 +259,3 @@ export default function AdminDashboard() {
     </ProtectedRoute>
   );
 }
-
