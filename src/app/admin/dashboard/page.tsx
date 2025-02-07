@@ -7,27 +7,9 @@ import { urlFor } from "@/sanity/lib/image";
 import Swal from "sweetalert2";
 import ProtectedRoute from "@/app/components/protectedroute";
 import { v4 as uuidv4 } from 'uuid';
-import { FaDollarSign, FaShoppingCart, FaClock, FaCheckCircle } from 'react-icons/fa'; // Add icons
-import { Line, Bar, Pie } from 'react-chartjs-2'; // Assuming you're using react-chartjs-2
-import {
-  Chart as ChartJS,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement,
-} from 'chart.js'; // Import the necessary elements
+import { FaDollarSign, FaShoppingCart, FaClock, FaCheckCircle } from 'react-icons/fa'; 
 
-// Registering the components (no CategoryScale)
-ChartJS.register(
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement
-);
+
 
 interface Order {
   _id: string;
